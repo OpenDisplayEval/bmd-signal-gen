@@ -1,0 +1,64 @@
+# Dependabot version-update PRs. Complements (does not replace) Dependabot
+# security updates, which open PRs for vulnerability alerts independently.
+#
+# `build(deps):` keeps each PR out of flywheel's auto_merge types
+# (.flywheel.yml), so a bump waits for a human review. A release has a week
+# to draw a follow-up fix before it is proposed.
+version: 2
+updates:
+  # Actions are SHA-pinned with a trailing version comment; Dependabot bumps
+  # the SHA and rewrites the comment.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    groups:
+      github-actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: "build"
+      include: "scope"
+
+  # PyPI packages in pyproject.toml, applied to uv.lock. The git dependency,
+  # display-patterns, stays manual: Dependabot's uv parser drops a direct
+  # reference's URL and looks the name up on PyPI, so it skips it without a
+  # PR or an error (dependabot/dependabot-core#16129).
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    ignore:
+      # pydecklink 1.x needs Desktop Video 16 at runtime; the cap in
+      # pyproject.toml moves with the documented driver floor.
+      - dependency-name: "pydecklink"
+        update-types: ["version-update:semver-major"]
+    # ruff and pyright bring new findings that need code edits, so they do
+    # not hold up the library bumps.
+    groups:
+      python-lint:
+        patterns: ["ruff", "pyright"]
+      python-packages:
+        patterns: ["*"]
+        exclude-patterns: ["ruff", "pyright"]
+    commit-message:
+      prefix: "build"
+      include: "scope"
+
+  # Hook revs in .pre-commit-config.yaml. Keep the ruff-pre-commit rev equal
+  # to the ruff version in uv.lock.
+  - package-ecosystem: "pre-commit"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    groups:
+      pre-commit-hooks:
+        patterns: ["*"]
+    commit-message:
+      prefix: "build"
+      include: "scope"

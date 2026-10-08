@@ -54,7 +54,10 @@ dependencies = [
     "typer>=0.16,<0.17",
     "rich>=14.0.0",
     "pillow>=12.1.1",
-    "pydecklink>=0.6.1",
+    # pydecklink 1.0 builds against DeckLink SDK 16 and needs Desktop Video
+    # 16.0 or later at runtime; on 15.x the device refuses output. Lift the
+    # cap together with the documented driver floor.
+    "pydecklink>=0.6.1,<1",
 ]
 
 [project.urls]
@@ -66,6 +69,9 @@ Changelog = "https://github.com/OpenDisplayEval/bmd-signal-gen/blob/main/CHANGEL
 
 [project.scripts]
 bmd-signal-gen = "bmd_sg.cli.main:app"
+
+[tool.uv]
+required-version = ">=0.12"
 
 [tool.uv.sources]
 display-patterns = { git = "https://github.com/OpenDisplayEval/display-patterns", tag = "v0.2.0" }
@@ -129,6 +135,9 @@ ignore = [
     "E501", # Line too long (handled by formatter)
     "B008", # Do not perform function calls in argument defaults
     "T201", # Print found (allow for debugging)
+    # StrEnum changes str() of a member from "Class.NAME" to its value, and
+    # the API status payload serialises these enums with str().
+    "UP042", # replace-str-enum
 ]
 
 [tool.ruff.lint.per-file-ignores]
