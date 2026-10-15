@@ -1216,11 +1216,17 @@ class BMDDeckLink:
             except ValueError:
                 # Format known to this project but not bound by pydecklink
                 continue
-            if device.does_support_video_mode(
-                pydecklink.VideoConnection.Unspecified,
-                DEFAULT_DISPLAY_MODE,
-                pd_format,
-            ):
+            try:
+                is_supported = device.does_support_video_mode(
+                    pydecklink.VideoConnection.Unspecified,
+                    DEFAULT_DISPLAY_MODE,
+                    pd_format,
+                )
+            except RuntimeError:
+                # Some drivers answer E_NOTIMPL instead of "unsupported"
+                # (e.g. Ay10 on the DeckLink 8K Pro); treat it as unsupported
+                continue
+            if is_supported:
                 supported.append(pixel_format_type)
         return supported
 
