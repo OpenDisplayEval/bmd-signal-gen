@@ -97,6 +97,34 @@ class TestHDRMetadataStructure:
         assert metadata.maxFALL == 400.0
 
 
+class TestSupportedPixelFormatsQuery:
+    """A driver error on one format does not abort the whole query."""
+
+    def test_driver_error_reads_as_unsupported(self) -> None:
+        """E_NOTIMPL (raised as RuntimeError) skips that format only."""
+        refused = bmd_decklink_module._to_pydecklink_pixel_format(
+            PixelFormatType.FORMAT_10BIT_YUVA
+        )
+
+        class FakeDevice:
+            def does_support_video_mode(self, connection, mode, pd_format):
+                if pd_format == refused:
+                    raise RuntimeError("DoesSupportVideoMode: E_NOTIMPL")
+                return True
+
+        # Bypass __init__ so no hardware is opened; close() runs on __del__
+        adapter = BMDDeckLink.__new__(BMDDeckLink)
+        adapter.started = False
+        adapter._device = FakeDevice()
+        try:
+            formats = adapter.get_supported_pixel_formats()
+        finally:
+            adapter._device = None
+
+        assert PixelFormatType.FORMAT_10BIT_YUVA not in formats
+        assert PixelFormatType.FORMAT_12BIT_RGBLE in formats
+
+
 @requires_hardware
 class TestHardwareAdapter:
     """Adapter behavior against a connected DeckLink device."""
