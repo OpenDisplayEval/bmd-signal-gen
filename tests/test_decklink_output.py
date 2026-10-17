@@ -7,7 +7,10 @@ and ``MockBMDDeckLink`` (no hardware) satisfy. Hardware tests skip when no
 DeckLink device is connected.
 """
 
+from typing import cast
+
 import numpy as np
+import pydecklink
 import pytest
 
 import bmd_sg.decklink.bmd_decklink as bmd_decklink_module
@@ -107,7 +110,12 @@ class TestSupportedPixelFormatsQuery:
         )
 
         class FakeDevice:
-            def does_support_video_mode(self, connection, mode, pd_format):
+            def does_support_video_mode(
+                self,
+                connection: pydecklink.VideoConnection,
+                mode: pydecklink.DisplayMode,
+                pd_format: pydecklink.PixelFormat,
+            ) -> bool:
                 if pd_format == refused:
                     raise RuntimeError("DoesSupportVideoMode: E_NOTIMPL")
                 return True
@@ -115,7 +123,7 @@ class TestSupportedPixelFormatsQuery:
         # Bypass __init__ so no hardware is opened; close() runs on __del__
         adapter = BMDDeckLink.__new__(BMDDeckLink)
         adapter.started = False
-        adapter._device = FakeDevice()
+        adapter._device = cast("pydecklink.Device", FakeDevice())
         try:
             formats = adapter.get_supported_pixel_formats()
         finally:
