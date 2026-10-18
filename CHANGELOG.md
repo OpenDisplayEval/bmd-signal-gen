@@ -1,3 +1,10 @@
+## [0.2.2](https://github.com/OpenDisplayEval/bmd-signal-gen/compare/v0.2.1...v0.2.2) (2026-10-18)
+
+
+### Bug Fixes
+
+* **decklink:** treat a driver error on one pixel format as unsupported ([616d257](https://github.com/OpenDisplayEval/bmd-signal-gen/commit/616d2570c11ba319d00a2f5cd4fe864b8585028d))
+
 ## [0.2.1](https://github.com/OpenLEDEval/bmd-signal-gen/compare/v0.2.0...v0.2.1) (2026-08-11)
 
 
