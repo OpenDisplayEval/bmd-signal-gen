@@ -14,18 +14,18 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import numpy as np
 from display_patterns.image_generators.checkerboard import PatternGenerator
-
-from bmd_sg.decklink.bmd_decklink import (
-    EOTFType,
-    HDRMetadata,
-    PixelFormatType,
-)
 from tests.mocks.mock_decklink import (
     MockBMDDeckLink,
     mock_get_decklink_devices,
     patch_decklink_module,
     reset_mock_state,
     set_available_devices,
+)
+
+from bmd_sg.decklink.bmd_decklink import (
+    EOTFType,
+    HDRMetadata,
+    PixelFormatType,
 )
 
 
