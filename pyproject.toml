@@ -51,9 +51,9 @@ dependencies = [
     "fastapi>=0.111.0",
     "pydantic>=2.12",
     "uvicorn>=0.35.0",
-    "typer>=0.16,<0.17",
+    "typer>=0.16",
     "rich>=14.0.0",
-    "pillow>=12.1.1",
+    "pillow>=12.3.0",
     # pydecklink 1.0 builds against DeckLink SDK 16 and needs Desktop Video
     # 16.0 or later at runtime; on 15.x the device refuses output. Lift the
     # cap together with the documented driver floor.
