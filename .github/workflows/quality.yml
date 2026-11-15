@@ -38,22 +38,12 @@ jobs:
 
   # Correctness class, carried over from the former ci.yml.
 
-  # ruff and pyright are pinned to py312 in pyproject.toml, so one leg
-  # carries the full lint signal; only pytest is version-sensitive.
-  lint:
+  # ruff, pyright, plus one test run through bug-free-happiness's shared
+  # Python workflow, which pins the lint and type-check tools centrally.
+  python:
     needs: classify
     if: needs.classify.outputs.derived_release_commit != 'true' && needs.classify.outputs.promotion_pr != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
-        with:
-          prune-cache: true
-          python-version: "3.12"
-      - run: uv sync
-      - run: uv run ruff format --check .
-      - run: uv run ruff check .
-      - run: uv run pyright
+    uses: repentsinner/bug-free-happiness/.github/workflows/python-correctness.yml@8bb4c839a8707cfa7f86be288553635f1e39d3c4 # v0.5.0
 
   test:
     needs: classify
@@ -124,7 +114,7 @@ jobs:
 
   quality-correctness:
     name: quality / correctness
-    needs: [classify, lint, test, actionlint]
+    needs: [classify, python, test, actionlint]
     if: always()
     runs-on: ubuntu-latest
     steps:
