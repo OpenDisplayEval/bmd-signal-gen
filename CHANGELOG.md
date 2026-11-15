@@ -1,3 +1,10 @@
+## [0.2.3](https://github.com/OpenDisplayEval/bmd-signal-gen/compare/v0.2.2...v0.2.3) (2026-11-15)
+
+
+### Bug Fixes
+
+* **deps:** allow typer releases past 0.16 ([#40](https://github.com/OpenDisplayEval/bmd-signal-gen/issues/40)) ([a30adab](https://github.com/OpenDisplayEval/bmd-signal-gen/commit/a30adaba1e5b017acd383db8af02241fa8dc7683))
+
 ## [0.2.2](https://github.com/OpenDisplayEval/bmd-signal-gen/compare/v0.2.1...v0.2.2) (2026-10-18)
 
 
