@@ -54,10 +54,10 @@ dependencies = [
     "typer>=0.16",
     "rich>=14.0.0",
     "pillow>=12.3.0",
-    # pydecklink 1.0 builds against DeckLink SDK 16 and needs Desktop Video
-    # 16.0 or later at runtime; on 15.x the device refuses output. Lift the
-    # cap together with the documented driver floor.
-    "pydecklink>=0.6.1,<1",
+    # pydecklink 1.x builds against DeckLink SDK 16, so it needs Desktop
+    # Video 16.0 or later at runtime (README, Prerequisites). 1.0.1 is the
+    # first whose pypixelpack range PyPI serves.
+    "pydecklink>=1.0.1,<2",
 ]
 
 [project.urls]

@@ -46,7 +46,8 @@ both capable of full 12-bit RGB output at 1080p30.
 ### Prerequisites
 
 - **macOS** (tested on macOS 15.5) or Windows
-- **Blackmagic Design Desktop Video drivers** (latest version)
+- **Blackmagic Design Desktop Video 16.0 or later**: pydecklink 1.x builds
+  against DeckLink SDK 16, and an older runtime refuses output
 - **Python 3.12+**
 - **UV package manager**
   ([installation guide](https://docs.astral.sh/uv/getting-started/installation/))

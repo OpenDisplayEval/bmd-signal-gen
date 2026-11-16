@@ -32,11 +32,6 @@ updates:
       interval: "weekly"
     cooldown:
       default-days: 7
-    ignore:
-      # pydecklink 1.x needs Desktop Video 16 at runtime; the cap in
-      # pyproject.toml moves with the documented driver floor.
-      - dependency-name: "pydecklink"
-        update-types: ["version-update:semver-major"]
     groups:
       python-packages:
         patterns: ["*"]
