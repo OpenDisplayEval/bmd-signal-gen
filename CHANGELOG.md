@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/OpenDisplayEval/bmd-signal-gen/compare/v0.2.3...v0.3.0) (2026-11-16)
+
+
+### Features
+
+* **deps:** run on pydecklink 1.x and Desktop Video 16 ([6c08278](https://github.com/OpenDisplayEval/bmd-signal-gen/commit/6c0827873f96db27e1f6ade715b340c676f723cb))
+
 ## [0.2.3](https://github.com/OpenDisplayEval/bmd-signal-gen/compare/v0.2.2...v0.2.3) (2026-11-15)
 
 
