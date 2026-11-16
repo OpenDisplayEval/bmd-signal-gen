@@ -1,10 +1,22 @@
 """Invoke tasks for code quality and formatting."""
 
 import shutil
+import sys
 from pathlib import Path
 
 from invoke.context import Context
 from invoke.tasks import task
+
+# The lint tools come from bug-free-happiness, at the release quality.yml
+# pins, so these tasks run the versions CI runs. Move it with quality.yml.
+BFH_TOOLS = (
+    "git+https://github.com/repentsinner/bug-free-happiness@v0.10.0"
+    "#subdirectory=.github/tools/python"
+)
+RUFF = f'uvx --from "{BFH_TOOLS}" ruff'
+# pyright reads the project's environment, the one `uv run invoke` runs in,
+# for the imports it checks.
+PYRIGHT = f'uvx --from "{BFH_TOOLS}" pyright --pythonpath "{sys.executable}"'
 
 
 @task
@@ -19,7 +31,7 @@ def lint(ctx: Context, fix: bool = False) -> None:
         Whether to auto-fix issues, by default False
     """
     print("🔍 Linting Python code...")
-    cmd = "ruff check ."
+    cmd = f"{RUFF} check ."
     if fix:
         cmd += " --fix"
     ctx.run(cmd)
@@ -37,7 +49,7 @@ def format(ctx: Context, check: bool = False) -> None:
         Whether to check formatting without applying changes, by default False
     """
     print("📝 Formatting Python code...")
-    cmd = "ruff format ."
+    cmd = f"{RUFF} format ."
     if check:
         cmd += " --check"
     ctx.run(cmd)
@@ -52,7 +64,7 @@ def typecheck(ctx: Context) -> None:
     ctx : Context
         Invoke context object
     """
-    ctx.run("pyright")
+    ctx.run(PYRIGHT)
 
 
 @task
